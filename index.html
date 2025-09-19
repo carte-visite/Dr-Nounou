@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>بطاقة الطبيب الرقمية</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
+    body{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      background:#1a1832;
+    }
+    @keyframes fadeZoom {
+      from {opacity:0; transform:scale(0.9);}
+      to {opacity:1; transform:scale(1);}
+    }
+    .card{
+      width:100%;
+      max-width:420px;
+      min-height:640px;
+      border-radius:22px;
+      overflow:hidden;
+      background:#2b2154;
+      color:white;
+      box-shadow:0 8px 24px rgba(0,0,0,0.4);
+      animation: fadeZoom 0.6s ease;
+    }
+    .header{
+      background:linear-gradient(135deg,#6d28d9,#4f46e5);
+      padding:28px;
+      position:relative;
+      height:160px;
+    }
+    .share{
+      position:absolute;
+      top:16px;
+      right:16px;
+      background:rgba(255,255,255,0.15);
+      border-radius:50%;
+      width:40px;
+      height:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:0.2s;
+    }
+    .share:active {transform:scale(0.9);}
+    .avatar{
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      border:4px solid white;
+      overflow:hidden;
+      background:white;
+      position:absolute;
+      bottom:-70px;
+      left:50%;
+      transform:translateX(-50%);
+    }
+    .avatar img{
+      width:100%;height:100%;object-fit:cover;
+    }
+    .info{
+      padding:100px 28px 28px;
+      text-align:center;
+    }
+    .name{font-size:26px;font-weight:700}
+    .role{font-size:17px;opacity:0.8;margin-top:8px}
+    .contact-list{
+      margin-top:24px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .contact-item{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      font-size:15px;
+      word-break:break-word;
+      padding:12px;
+      border:1px solid rgba(255,255,255,0.25);
+      border-radius:12px;
+      background:rgba(255,255,255,0.05);
+      cursor:pointer;
+      transition:0.2s;
+    }
+    .contact-item:active {
+      transform:scale(0.96);
+      background:rgba(255,255,255,0.15);
+    }
+    .contact-item svg{flex:0 0 24px}
+    .actions{
+      margin-top:28px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .btn{
+      padding:14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.3);
+      background:transparent;
+      color:white;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.2s;
+    }
+    .btn:hover{background:rgba(255,255,255,0.1)}
+    .btn:active{transform:scale(0.97);}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="share" id="shareBtn">
+        <!-- share icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"/>
+          <circle cx="6" cy="12" r="3"/>
+          <circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+      </div>
+      <div class="avatar">
+        <!-- صورة بيضاء افتراضية -->
+        <img src="https://raw.githubusercontent.com/carte-visite/Dr-Nounou/refs/heads/main/000.png" alt="Profile"/>
+      </div>
+    </div>
+    <div class="info">
+      <div class="name" id="name">د. محمد أحمد</div>
+      <div class="role" id="role">طبيب قلب</div>
+      <div class="contact-list">
+        <div class="contact-item">
+          <!-- email icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2" ry="2"/>
+            <polyline points="3,7 12,13 21,7"/>
+          </svg>
+          <span id="email">doctor@example.com</span>
+        </div>
+        <div class="contact-item">
+          <!-- phone icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.12 1.05.38 2.07.78 3.02a2 2 0 0 1-.45 2.11l-1.1 1.1a16 16 0 0 0 6.18 6.18l1.1-1.1a2 2 0 0 1 2.11-.45c.95.4 1.97.66 3.02.78A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span id="phone">+123 456 7890</span>
+        </div>
+        <div class="contact-item">
+          <!-- location icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span id="address">شارع رئيسي 123، المدينة</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="saveBtn">حفظ رقم الهاتف</button>
+        <button class="btn" id="sendBtn">مشاركة بياناتي</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // بيانات الطبيب
+    const contact = {
+      name: "د. محمد أحمد",
+      role: "طبيب قلب",
+      email: "doctor@example.com",
+      phone: "+1234567890",
+      address: "شارع رئيسي 123، المدينة",
+      website: "https://example.com"
+    };
+
+    // vCard مبسّط (الاسم + الهاتف فقط)
+    function makeVCard(c){
+      return `BEGIN:VCARD\nVERSION:3.0\nFN:${c.name}\nTEL;TYPE=CELL:${c.phone}\nEND:VCARD`;
+    }
+
+    document.getElementById("saveBtn").addEventListener("click", ()=>{
+      const blob = new Blob([makeVCard(contact)], {type:"text/vcard"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${contact.name.replace(/\s+/g,'_')}.vcf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById("sendBtn").addEventListener("click", async ()=>{
+      if(navigator.share){
+        try{
+          await navigator.share({
+            title: contact.name,
+            text: `${contact.name} - ${contact.role}
+📞 ${contact.phone}
+✉️ ${contact.email}
+📍 ${contact.address}`,
+            url: contact.website
+          });
+        }catch(e){console.log("Share cancelled",e);}
+      }else{
+        alert("المشاركة غير مدعومة في هذا الجهاز");
+      }
+    });
+
+    document.getElementById("shareBtn").addEventListener("click", ()=>{
+      document.getElementById("sendBtn").click();
+    });
+  </script>
+</body>
+</html>
