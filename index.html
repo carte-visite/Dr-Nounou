@@ -130,7 +130,7 @@
       </div>
       <div class="avatar">
         <!-- صورة بيضاء افتراضية -->
-        <img src="https://raw.githubusercontent.com/carte-visite/Dr-Nounou/refs/heads/main/000.png" alt="Profile"/>
+        <img src="https://via.placeholder.com/150/FFFFFF/FFFFFF" alt="Profile"/>
       </div>
     </div>
     <div class="info">
@@ -162,7 +162,8 @@
         </div>
       </div>
       <div class="actions">
-        <button class="btn" id="saveBtn">حفظ رقم الهاتف</button>
+        <!-- تعديل هنا فقط -->
+        <a class="btn" href="tel:+1234567890">حفظ رقم الهاتف</a>
         <button class="btn" id="sendBtn">مشاركة بياناتي</button>
       </div>
     </div>
@@ -178,23 +179,6 @@
       address: "شارع رئيسي 123، المدينة",
       website: "https://example.com"
     };
-
-    // vCard مبسّط (الاسم + الهاتف فقط)
-    function makeVCard(c){
-      return `BEGIN:VCARD\nVERSION:3.0\nFN:${c.name}\nTEL;TYPE=CELL:${c.phone}\nEND:VCARD`;
-    }
-
-    document.getElementById("saveBtn").addEventListener("click", ()=>{
-      const blob = new Blob([makeVCard(contact)], {type:"text/vcard"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${contact.name.replace(/\s+/g,'_')}.vcf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    });
 
     document.getElementById("sendBtn").addEventListener("click", async ()=>{
       if(navigator.share){
