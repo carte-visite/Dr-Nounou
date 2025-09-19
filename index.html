@@ -162,8 +162,7 @@
         </div>
       </div>
       <div class="actions">
-        <!-- تعديل هنا فقط -->
-        <a class="btn" href="tel:+1234567890">حفظ رقم الهاتف</a>
+        <button class="btn" id="saveBtn">حفظ رقم الهاتف</button>
         <button class="btn" id="sendBtn">مشاركة بياناتي</button>
       </div>
     </div>
@@ -180,15 +179,29 @@
       website: "https://example.com"
     };
 
+    // vCard content
+    function makeVCard(c){
+      return `BEGIN:VCARD\nVERSION:3.0\nFN:${c.name}\nTITLE:${c.role}\nTEL;TYPE=CELL:${c.phone}\nEMAIL:${c.email}\nADR:${c.address}\nURL:${c.website}\nEND:VCARD`;
+    }
+
+    document.getElementById("saveBtn").addEventListener("click", ()=>{
+      const blob = new Blob([makeVCard(contact)], {type:"text/vcard"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${contact.name.replace(/\s+/g,'_')}.vcf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
     document.getElementById("sendBtn").addEventListener("click", async ()=>{
       if(navigator.share){
         try{
           await navigator.share({
             title: contact.name,
-            text: `${contact.name} - ${contact.role}
-📞 ${contact.phone}
-✉️ ${contact.email}
-📍 ${contact.address}`,
+            text: `${contact.name}\n${contact.phone}\n${contact.email}\n${contact.address}`,
             url: contact.website
           });
         }catch(e){console.log("Share cancelled",e);}
