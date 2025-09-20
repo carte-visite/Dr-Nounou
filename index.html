@@ -171,11 +171,11 @@
   <script>
     // بيانات الطبيب
     const contact = {
-      name: "DR NOUNOU ( HELLO )",
-      role: "CARDIOLOGUE",
+      name: "د. محمد أحمد",
+      role: "طبيب قلب",
       email: "doctor@example.com",
-      phone: "06.22.22.22.22",
-      address: "RUE BELLE VIE"
+      phone: "+1234567890",
+      address: "شارع رئيسي 123، المدينة"
     };
 
     // vCard content
@@ -201,7 +201,7 @@
           await navigator.share({
             title: contact.name,
             text: 
-`${contact.name}
+`${contact.name} (${contact.role})
 📞 ${contact.phone}
 ✉️ ${contact.email}
 📍 ${contact.address}`
