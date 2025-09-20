@@ -52,6 +52,20 @@
       transition:0.2s;
     }
     .share:active {transform:scale(0.9);}
+    .back{
+      position:absolute;
+      top:16px;
+      left:16px;
+      background:rgba(255,255,255,0.15);
+      border-radius:8px;
+      padding:6px 12px;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:600;
+      color:white;
+      transition:0.2s;
+    }
+    .back:active{transform:scale(0.9);}
     .avatar{
       width:140px;
       height:140px;
@@ -143,6 +157,7 @@
   <div class="card" id="card" style="display:none;">
     <div>
       <div class="header">
+        <div class="back" id="backBtn">رجوع</div>
         <div class="share" id="shareBtn">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="18" cy="5" r="3"/>
@@ -202,7 +217,7 @@
         saveBtn:"حفظ رقم الهاتف",
         mapBtn:"عرض الموقع على الخريطة",
         shareBtn:"مشاركة معلومات الطبيب",
-        hours:"⏰ أوقات العمل: من السبت إلى الخميس (09:00 – 17:00)"
+        hours:"⏰ أوقات الاستقبال: من السبت إلى الخميس (09:00 – 17:00)"
       },
       fr:{
         name:"Dr. Mohamed Ahmed",
@@ -211,15 +226,16 @@
         email:"doctor@example.com",
         address:"Alger, Algérie",
         saveBtn:"Enregistrer le numéro",
-        mapBtn:"Voir l’adresse",
-        shareBtn:"Partager les informations du médecin",
-        hours:"⏰ Horaires: Samedi au Jeudi (09h00 – 17h00)"
+        mapBtn:"Voir l'adresse",
+        shareBtn:"Partager les infos du médecin",
+        hours:"⏰ Horaires : Du samedi au jeudi (09h00 – 17h00)"
       }
     };
 
     function setLanguage(lang){
       document.getElementById("langScreen").style.display="none";
       document.getElementById("card").style.display="flex";
+
       const t = translations[lang];
       document.getElementById("name").innerText = t.name;
       document.getElementById("role").innerText = t.role;
@@ -230,6 +246,14 @@
       document.getElementById("mapBtn").innerText = t.mapBtn;
       document.getElementById("sendBtn").innerText = t.shareBtn;
       document.getElementById("hours").innerText = t.hours;
+
+      // إضافة حالة للتاريخ ليدعم زر الرجوع في الهاتف
+      history.pushState({screen:"card"},"","#card");
+    }
+
+    function showLangScreen(){
+      document.getElementById("card").style.display="none";
+      document.getElementById("langScreen").style.display="flex";
     }
 
     document.getElementById("sendBtn").addEventListener("click", async ()=>{
@@ -250,6 +274,19 @@
 
     document.getElementById("shareBtn").addEventListener("click", ()=>{
       document.getElementById("sendBtn").click();
+    });
+
+    document.getElementById("backBtn").addEventListener("click", ()=>{
+      showLangScreen();
+      history.pushState({screen:"lang"},"","#lang");
+    });
+
+    // دعم زر الرجوع في الهاتف
+    window.addEventListener("popstate", (event)=>{
+      if(event.state && event.state.screen==="card"){
+        showLangScreen();
+        history.pushState({screen:"lang"},"","#lang");
+      }
     });
   </script>
 </body>
