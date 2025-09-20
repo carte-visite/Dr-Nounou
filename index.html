@@ -68,7 +68,8 @@
       padding:100px 28px 28px;
       text-align:center;
     }
-    .name{font-size:26px;font-weight:700}
+    .name-fr{font-size:24px;font-weight:700}
+    .name-ar{font-size:22px;font-weight:600;margin-top:6px}
     .role{font-size:17px;opacity:0.8;margin-top:8px}
     .contact-list{
       margin-top:24px;
@@ -104,31 +105,19 @@
     }
     .btn{
       padding:16px;
-      border-radius:14px;
-      font-size:18px;
-      font-weight:700;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.3);
+      background:transparent;
+      color:white;
+      font-size:17px;
+      font-weight:600;
       cursor:pointer;
+      transition:0.2s;
       text-decoration:none;
       text-align:center;
-      display:block;
-      transition:0.3s ease;
-      background:linear-gradient(135deg,#4f46e5,#6d28d9);
-      color:white;
-      box-shadow:0 6px 16px rgba(0,0,0,0.3);
-
-      /* إضافات لتوحيد المظهر على الهاتف */
-      -webkit-appearance:none;
-      appearance:none;
-      outline:none;
     }
-    .btn:hover{
-      transform:translateY(-3px);
-      box-shadow:0 8px 20px rgba(0,0,0,0.45);
-    }
-    .btn:active{
-      transform:scale(0.96);
-      box-shadow:0 4px 12px rgba(0,0,0,0.25);
-    }
+    .btn:hover{background:rgba(255,255,255,0.1)}
+    .btn:active{transform:scale(0.97);}
   </style>
 </head>
 <body>
@@ -145,12 +134,14 @@
         </svg>
       </div>
       <div class="avatar">
+        <!-- صورة بيضاء افتراضية -->
         <img src="https://via.placeholder.com/150/FFFFFF/FFFFFF" alt="Profile"/>
       </div>
     </div>
     <div class="info">
-      <div class="name" id="name">Dr n.hamzaoui eose hadj zoubir</div>
-      <div class="role" id="role">(طبيب قلب)</div>
+      <div class="name-fr" id="name-fr">Professeur LOUNIS Doulkifly</div>
+      <div class="name-ar" id="name-ar">الأستاذ لونيس دولكيفلي</div>
+      <div class="role" id="role">(Médecine Interne, Cardiologie, Diabétologie)</div>
       <div class="contact-list">
         <a href="tel:+1234567890" class="contact-item">
           <!-- phone icon -->
@@ -167,41 +158,40 @@
           </svg>
           <span id="email">doctor@example.com</span>
         </a>
-        <a href="https://www.google.com/maps/place/Algiers/@36.7385639,2.8096837,10z/data=!3m1!4b1!4m6!3m5!1s0x128fb26977ea659f:0x4231102d38a36f49!8m2!3d36.753768!4d3.0587561!16zL20vMHJ0dg" target="_blank" class="contact-item">
+        <a href="https://www.google.com/maps/place/Algiers/@36.7385639,2.8096837,10z" target="_blank" class="contact-item">
           <!-- location icon -->
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/>
             <circle cx="12" cy="10" r="3"/>
           </svg>
-          <span id="address">Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger</span>
+          <span id="address">Chevalley, Alger</span>
         </a>
       </div>
       <div class="actions">
         <a href="tel:+1234567890" class="btn">حفظ رقم الهاتف</a>
-        <a href="https://www.google.com/maps/place/Algiers/@36.7385639,2.8096837,10z/data=!3m1!4b1!4m6!3m5!1s0x128fb26977ea659f:0x4231102d38a36f49!8m2!3d36.753768!4d3.0587561!16zL20vMHJ0dg" target="_blank" class="btn">رؤية العنوان</a>
-        <a href="javascript:void(0)" class="btn" id="sendBtn">مشاركة معلومات الطبيب</a>
+        <a href="https://www.google.com/maps/place/Algiers/@36.7385639,2.8096837,10z" target="_blank" class="btn">رؤية العنوان</a>
+        <button class="btn" id="sendBtn">مشاركة معلومات الطبيب</button>
       </div>
     </div>
   </div>
 
   <script>
+    // بيانات الطبيب
     const contact = {
-      name: "د. محمد أحمد",
-      role: "طبيب قلب",
+      nameFr: "Professeur LOUNIS Doulkifly",
+      nameAr: "الأستاذ لونيس دولكيفلي",
+      role: "Médecine Interne, Cardiologie, Diabétologie",
       email: "doctor@example.com",
       phone: "+1234567890",
-      address: "Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger"
+      address: "Chevalley, Alger"
     };
 
     document.getElementById("sendBtn").addEventListener("click", async ()=>{
       if(navigator.share){
         try{
           await navigator.share({
-            title: contact.name,
-            text: `👨‍⚕️ ${contact.name} (${contact.role})
-📞 ${contact.phone}
-✉️ ${contact.email}
-📍 ${contact.address}`
+            title: contact.nameFr,
+            text: `👨‍⚕️ ${contact.nameFr}\n${contact.nameAr}\n(${contact.role})\n📞 ${contact.phone}\n✉️ ${contact.email}\n📍 ${contact.address}`
           });
         }catch(e){console.log("Share cancelled",e);}
       }else{
