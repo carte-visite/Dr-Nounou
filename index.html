@@ -201,7 +201,7 @@
         try{
           await navigator.share({
             title: contact.name,
-            text: `${contact.name}\n${contact.phone}\n${contact.email}\n${contact.address}`,
+            text: `${contact.name}\n📞 ${contact.phone}\n✉️ ${contact.email}\n📍 ${contact.address}`,
             url: contact.website
           });
         }catch(e){console.log("Share cancelled",e);}
