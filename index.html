@@ -76,17 +76,18 @@
       flex-direction:column;
       gap:18px;
     }
+
+    /* كل خانة الآن صندوق (div) يحتوي الرابط والنص وزر النسخ على اليمين */
     .contact-item{
       display:flex;
       align-items:center;
-      gap:14px;
+      gap:12px;
       font-size:15px;
       word-break:break-word;
       padding:12px;
       border:1px solid rgba(255,255,255,0.25);
       border-radius:12px;
       background:rgba(255,255,255,0.05);
-      cursor:pointer;
       transition:0.2s;
       color:white;
       text-decoration:none;
@@ -95,7 +96,43 @@
       transform:scale(0.96);
       background:rgba(255,255,255,0.15);
     }
-    .contact-item svg{flex:0 0 24px}
+    /* الرابط الداخلي الذي يشغل المكان كله (ما عدا زر النسخ) */
+    .contact-link{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      color:inherit;
+      text-decoration:none;
+      flex:1; /* يأخذ المساحة المتبقية */
+      min-width:0; /* يتيح قطع النص بالـ ellipsis/wrapping إن لزم */
+    }
+    .contact-link svg{flex:0 0 24px}
+    .contact-link span{display:inline-block; overflow-wrap:break-word; word-break:break-word}
+
+    /* زر النسخ على يمين الخانة */
+    .copy-btn{
+      margin-left:12px; /* في اتجاه اللغات RTL هذا يضعه على اليمين */
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.12);
+      color:white;
+      padding:8px;
+      border-radius:10px;
+      cursor:pointer;
+      min-width:40px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      transition:0.18s;
+      font-weight:700;
+      font-size:14px;
+    }
+    .copy-btn:active{transform:scale(0.96)}
+    .copy-btn.copied{
+      background:rgba(34,197,94,0.18);
+      border-color:rgba(34,197,94,0.6);
+      color:#9ef3b0;
+    }
+
     .actions{
       margin-top:28px;
       display:flex;
@@ -115,7 +152,7 @@
       text-decoration:none;
       display:block;
     }
-    .btn:hover{opacity:0.9}
+    .btn:hover{opacity:0.95}
     .btn:active{transform:scale(0.97);}
   </style>
 </head>
@@ -140,31 +177,47 @@
     <div class="info">
       <div class="name" id="name">Dr. Mohamed Ahmed<br/>د. محمد أحمد</div>
       <div class="role" id="role">(طبيب قلب)</div>
+
       <div class="contact-list">
-        <a href="tel:+1234567890" class="contact-item">
-          <!-- phone icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.12 1.05.38 2.07.78 3.02a2 2 0 0 1-.45 2.11l-1.1 1.1a16 16 0 0 0 6.18 6.18l1.1-1.1a2 2 0 0 1 2.11-.45c.95.4 1.97.66 3.02.78A2 2 0 0 1 22 16.92z"/>
-          </svg>
-          <span id="phone">+123 456 7890</span>
-        </a>
-        <a href="mailto:doctor@example.com" class="contact-item">
-          <!-- email icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="5" width="18" height="14" rx="2" ry="2"/>
-            <polyline points="3,7 12,13 21,7"/>
-          </svg>
-          <span id="email">doctor@example.com</span>
-        </a>
-        <a href="https://www.google.com/maps/place/Algiers/@36.7385639,2.8096837,10z/data=!3m1!4b1!4m6!3m5!1s0x128fb26977ea659f:0x4231102d38a36f49!8m2!3d36.753768!4d3.0587561!16zL20vMHJ0dg" target="_blank" class="contact-item">
-          <!-- location icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/>
-            <circle cx="12" cy="10" r="3"/>
-          </svg>
-          <span id="address">Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger</span>
-        </a>
+        <!-- رقم الهاتف: صندوق يحتوي الرابط (tel) + زر النسخ -->
+        <div class="contact-item">
+          <a href="tel:+1234567890" class="contact-link" id="phoneLink">
+            <!-- phone icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.12 1.05.38 2.07.78 3.02a2 2 0 0 1-.45 2.11l-1.1 1.1a16 16 0 0 0 6.18 6.18l1.1-1.1a2 2 0 0 1 2.11-.45c.95.4 1.97.66 3.02.78A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <span id="phone">+123 456 7890</span>
+          </a>
+          <button class="copy-btn" data-copy="+123 456 7890" aria-label="نسخ رقم الهاتف">نسخ</button>
+        </div>
+
+        <!-- الايميل: صندوق يحتوي الرابط (mailto) + زر النسخ -->
+        <div class="contact-item">
+          <a href="mailto:doctor@example.com" class="contact-link" id="emailLink">
+            <!-- email icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2" ry="2"/>
+              <polyline points="3,7 12,13 21,7"/>
+            </svg>
+            <span id="email">doctor@example.com</span>
+          </a>
+          <button class="copy-btn" data-copy="doctor@example.com" aria-label="نسخ الإيميل">نسخ</button>
+        </div>
+
+        <!-- العنوان: صندوق يحتوي الرابط (maps) + زر النسخ -->
+        <div class="contact-item">
+          <a href="https://www.google.com/maps/place/Algiers/@36.7385639,2.8096837,10z/data=!3m1!4b1!4m6!3m5!1s0x128fb26977ea659f:0x4231102d38a36f49!8m2!3d36.753768!4d3.0587561!16zL20vMHJ0dg" target="_blank" class="contact-link" id="addressLink">
+            <!-- location icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span id="address">Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger</span>
+          </a>
+          <button class="copy-btn" data-copy="Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger" aria-label="نسخ العنوان">نسخ</button>
+        </div>
       </div>
+
       <div class="actions">
         <a href="tel:+1234567890" class="btn">حفظ رقم الهاتف</a>
         <a href="https://www.google.com/maps/place/Algiers/@36.7385639,2.8096837,10z/data=!3m1!4b1!4m6!3m5!1s0x128fb26977ea659f:0x4231102d38a36f49!8m2!3d36.753768!4d3.0587561!16zL20vMHJ0dg" target="_blank" class="btn">رؤية العنوان</a>
@@ -174,24 +227,57 @@
   </div>
 
   <script>
-    // بيانات الطبيب
+    // بيانات الطبيب (لمزامنة النسخ إن احتجت لتعديل لاحق)
     const contact = {
       name: "Dr. Mohamed Ahmed / د. محمد أحمد",
       role: "طبيب قلب",
       email: "doctor@example.com",
-      phone: "+1234567890",
+      phone: "+123 456 7890",
       address: "Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger"
     };
 
+    // دالة نسخ عامة مع مؤشّر بصري
+    async function copyToClipboard(text, btn){
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          await navigator.clipboard.writeText(text);
+        } else {
+          // fallback قديم
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+        // feedback بصري
+        btn.classList.add('copied');
+        const original = btn.innerHTML;
+        btn.innerHTML = '✓';
+        setTimeout(()=>{ btn.classList.remove('copied'); btn.innerHTML = original; }, 900);
+      }catch(e){
+        console.error('Copy failed', e);
+      }
+    }
+
+    // توصيل أزرار النسخ
+    document.querySelectorAll('.copy-btn').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const text = btn.getAttribute('data-copy') || '';
+        copyToClipboard(text, btn);
+      });
+    });
+
+    // زر المشاركة (نفس العمل الحالي)
     document.getElementById("sendBtn").addEventListener("click", async ()=>{
       if(navigator.share){
         try{
           await navigator.share({
             title: contact.name,
-            text: `👨‍⚕️ ${contact.name} (${contact.role})
-📞 ${contact.phone}
-✉️ ${contact.email}
-📍 ${contact.address}`
+            text: `👨‍⚕️ ${contact.name}\n(${contact.role})\n📞 ${contact.phone}\n✉️ ${contact.email}\n📍 ${contact.address}`
           });
         }catch(e){console.log("Share cancelled",e);}
       }else{
