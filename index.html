@@ -130,7 +130,7 @@
       </div>
       <div class="avatar">
         <!-- صورة بيضاء افتراضية -->
-        <img src="https://via.placeholder.com/150/FFFFFF/FFFFFF" alt="Profile"/>
+        <img src="https://raw.githubusercontent.com/carte-visite/Dr-Nounou/refs/heads/main/000.png" alt="Profile"/>
       </div>
     </div>
     <div class="info">
@@ -201,7 +201,11 @@
         try{
           await navigator.share({
             title: contact.name,
-            text: `${contact.name}\n📞 ${contact.phone}\n✉️ ${contact.email}\n📍 ${contact.address}`,
+            text: 
+`د. محمد أحمد
+📞 +1234567890
+✉️ doctor@example.com
+📍 شارع رئيسي 123، المدينة`,
             url: contact.website
           });
         }catch(e){console.log("Share cancelled",e);}
