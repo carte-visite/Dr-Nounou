@@ -259,7 +259,10 @@
       }
     };
 
+    let currentLang = "ar";
+
     function setLanguage(lang){
+      currentLang = lang;
       document.getElementById("langScreen").style.display="none";
       document.getElementById("card").style.display="flex";
       const t = translations[lang];
@@ -285,14 +288,19 @@
     }
 
     document.getElementById("sendBtn").addEventListener("click", async ()=>{
+      const name = document.getElementById("name").innerText;
+      const role = document.getElementById("role").innerText;
+      const phone = document.getElementById("phone").innerText;
+      const email = document.getElementById("email").innerText;
+      const address = document.getElementById("address").innerText;
+
+      const message = `${name} (${role})\n📞 ${phone}\n✉️ ${email}\n📍 ${address}`;
+
       if(navigator.share){
         try{
           await navigator.share({
-            title: document.getElementById("name").innerText,
-            text: document.getElementById("role").innerText+"\n"+
-                  "📞 "+document.getElementById("phone").innerText+"\n"+
-                  "✉️ "+document.getElementById("email").innerText+"\n"+
-                  "📍 "+document.getElementById("address").innerText
+            title: name,
+            text: message
           });
         }catch(e){console.log("Share cancelled",e);}
       }else{
