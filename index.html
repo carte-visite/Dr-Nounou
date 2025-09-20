@@ -130,7 +130,7 @@
       </div>
       <div class="avatar">
         <!-- صورة بيضاء افتراضية -->
-        <img src="https://raw.githubusercontent.com/carte-visite/Dr-Nounou/refs/heads/main/000.png" alt="Profile"/>
+        <img src="https://via.placeholder.com/150/FFFFFF/FFFFFF" alt="Profile"/>
       </div>
     </div>
     <div class="info">
@@ -171,17 +171,16 @@
   <script>
     // بيانات الطبيب
     const contact = {
-      name: "د. محمد أحمد",
-      role: "طبيب قلب",
+      name: "DR NOUNOU",
+      role: "CARDIOLOGUE",
       email: "doctor@example.com",
-      phone: "+1234567890",
-      address: "شارع رئيسي 123، المدينة",
-      website: "https://example.com"
+      phone: "0660.60.60.60",
+      address: "شارع رئيسي 123، المدينة"
     };
 
     // vCard content
     function makeVCard(c){
-      return `BEGIN:VCARD\nVERSION:3.0\nFN:${c.name}\nTITLE:${c.role}\nTEL;TYPE=CELL:${c.phone}\nEMAIL:${c.email}\nADR:${c.address}\nURL:${c.website}\nEND:VCARD`;
+      return `BEGIN:VCARD\nVERSION:3.0\nFN:${c.name}\nTITLE:${c.role}\nTEL;TYPE=CELL:${c.phone}\nEMAIL:${c.email}\nADR:${c.address}\nEND:VCARD`;
     }
 
     document.getElementById("saveBtn").addEventListener("click", ()=>{
@@ -202,11 +201,9 @@
           await navigator.share({
             title: contact.name,
             text: 
-`د. محمد أحمد
-📞 +1234567890
-✉️ doctor@example.com
-📍 شارع رئيسي 123، المدينة`,
-            url: contact.website
+`${contact.name}
+${contact.phone}
+${contact.address}`
           });
         }catch(e){console.log("Share cancelled",e);}
       }else{
