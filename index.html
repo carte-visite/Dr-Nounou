@@ -171,10 +171,10 @@
   <script>
     // بيانات الطبيب
     const contact = {
-      name: "DR NOUNOU",
-      role: "CARDIOLOGUE",
+      name: "د. محمد أحمد",
+      role: "طبيب قلب",
       email: "doctor@example.com",
-      phone: "0660.60.60.60",
+      phone: "+1234567890",
       address: "شارع رئيسي 123، المدينة"
     };
 
@@ -202,8 +202,9 @@
             title: contact.name,
             text: 
 `${contact.name}
-${contact.phone}
-${contact.address}`
+📞 ${contact.phone}
+✉️ ${contact.email}
+📍 ${contact.address}`
           });
         }catch(e){console.log("Share cancelled",e);}
       }else{
