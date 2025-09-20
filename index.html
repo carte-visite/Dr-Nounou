@@ -97,9 +97,21 @@
       transition:0.2s;
       color:white;
       text-decoration:none;
+      justify-content:space-between;
     }
     .contact-item:active {transform:scale(0.96);background:rgba(255,255,255,0.15);}
-    .contact-item svg{flex:0 0 24px}
+    .contact-left{display:flex;align-items:center;gap:10px;}
+    .copy-btn{
+      background:rgba(255,255,255,0.15);
+      border:none;
+      border-radius:6px;
+      padding:4px 10px;
+      color:white;
+      font-size:13px;
+      cursor:pointer;
+      transition:0.2s;
+    }
+    .copy-btn:hover{background:rgba(255,255,255,0.3);}
     .actions{margin-top:28px;display:flex;flex-direction:column;gap:14px;}
     .btn{
       padding:14px;
@@ -175,26 +187,37 @@
         <div class="name" id="name">Dr. Mohamed Ahmed</div>
         <div class="role" id="role">(Cardiologist)</div>
         <div class="contact-list">
-          <a href="tel:+1234567890" class="contact-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.12 1.05.38 2.07.78 3.02a2 2 0 0 1-.45 2.11l-1.1 1.1a16 16 0 0 0 6.18 6.18l1.1-1.1a2 2 0 0 1 2.11-.45c.95.4 1.97.66 3.02.78A2 2 0 0 1 22 16.92z"/>
-            </svg>
-            <span id="phone">+123 456 7890</span>
-          </a>
-          <a href="mailto:doctor@example.com" class="contact-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="5" width="18" height="14" rx="2" ry="2"/>
-              <polyline points="3,7 12,13 21,7"/>
-            </svg>
-            <span id="email">doctor@example.com</span>
-          </a>
-          <a href="https://www.google.com/maps/place/Algiers/" target="_blank" class="contact-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-            <span id="address">Alger, Algérie</span>
-          </a>
+          <div class="contact-item">
+            <div class="contact-left">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.12 1.05.38 2.07.78 3.02a2 2 0 0 1-.45 2.11l-1.1 1.1a16 16 0 0 0 6.18 6.18l1.1-1.1a2 2 0 0 1 2.11-.45c.95.4 1.97.66 3.02.78A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span id="phone">+123 456 7890</span>
+            </div>
+            <button class="copy-btn" id="copyPhone">نسخ</button>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-left">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2" ry="2"/>
+                <polyline points="3,7 12,13 21,7"/>
+              </svg>
+              <span id="email">doctor@example.com</span>
+            </div>
+            <button class="copy-btn" id="copyEmail">نسخ</button>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-left">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span id="address">Alger, Algérie</span>
+            </div>
+            <button class="copy-btn" id="copyAddress">نسخ</button>
+          </div>
         </div>
         <div class="actions">
           <a href="tel:+1234567890" class="btn" id="saveBtn">Save Phone</a>
@@ -217,7 +240,9 @@
         saveBtn:"حفظ رقم الهاتف",
         mapBtn:"عرض الموقع على الخريطة",
         shareBtn:"مشاركة معلومات الطبيب",
-        hours:"⏰ أوقات الاستقبال: من السبت إلى الخميس (09:00 – 17:00)"
+        hours:"⏰ أوقات العمل: من السبت إلى الخميس (09:00 – 17:00)",
+        copy:"نسخ",
+        back:"رجوع"
       },
       fr:{
         name:"Dr. Mohamed Ahmed",
@@ -228,14 +253,15 @@
         saveBtn:"Enregistrer le numéro",
         mapBtn:"Voir l'adresse",
         shareBtn:"Partager les infos du médecin",
-        hours:"⏰ Horaires : Du samedi au jeudi (09h00 – 17h00)"
+        hours:"⏰ Horaires : Du samedi au jeudi (09h00 – 17h00)",
+        copy:"Copier",
+        back:"Retour"
       }
     };
 
     function setLanguage(lang){
       document.getElementById("langScreen").style.display="none";
       document.getElementById("card").style.display="flex";
-
       const t = translations[lang];
       document.getElementById("name").innerText = t.name;
       document.getElementById("role").innerText = t.role;
@@ -246,8 +272,10 @@
       document.getElementById("mapBtn").innerText = t.mapBtn;
       document.getElementById("sendBtn").innerText = t.shareBtn;
       document.getElementById("hours").innerText = t.hours;
-
-      // إضافة حالة للتاريخ ليدعم زر الرجوع في الهاتف
+      document.getElementById("copyPhone").innerText = t.copy;
+      document.getElementById("copyEmail").innerText = t.copy;
+      document.getElementById("copyAddress").innerText = t.copy;
+      document.getElementById("backBtn").innerText = t.back;
       history.pushState({screen:"card"},"","#card");
     }
 
@@ -281,13 +309,19 @@
       history.pushState({screen:"lang"},"","#lang");
     });
 
-    // دعم زر الرجوع في الهاتف
     window.addEventListener("popstate", (event)=>{
       if(event.state && event.state.screen==="card"){
         showLangScreen();
         history.pushState({screen:"lang"},"","#lang");
       }
     });
+
+    function copyText(id){
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(()=>{
+        alert("✅ تم نسخ: " + text);
+      });
+    }
   </script>
 </body>
 </html>
