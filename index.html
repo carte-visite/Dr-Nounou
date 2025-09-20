@@ -112,6 +112,7 @@
       transition:0.2s;
     }
     .copy-btn:hover{background:rgba(255,255,255,0.3);}
+    .copy-btn.copied{background:rgba(34,197,94,0.18); color:#9ef3b0;}
     .actions{margin-top:28px;display:flex;flex-direction:column;gap:14px;}
     .btn{
       padding:14px;
@@ -234,7 +235,7 @@
       ar:{
         name:"د. محمد أحمد",
         role:"طبيب قلب",
-        phone:"05.00.00.00.00",
+        phone:"+123 456 7890",
         email:"doctor@example.com",
         address:"الجزائر، الجزائر",
         saveBtn:"حفظ رقم الهاتف",
@@ -242,12 +243,13 @@
         shareBtn:"مشاركة معلومات الطبيب",
         hours:"⏰ أوقات العمل: من السبت إلى الخميس (09:00 – 17:00)",
         copy:"نسخ",
+        copiedMsgPrefix:"✅ تم نسخ: ",
         back:"رجوع"
       },
       fr:{
         name:"Dr. Mohamed Ahmed",
         role:"Cardiologue",
-        phone:"05.00.00.00.00",
+        phone:"+123 456 7890",
         email:"doctor@example.com",
         address:"Alger, Algérie",
         saveBtn:"Enregistrer le numéro",
@@ -255,6 +257,7 @@
         shareBtn:"Partager les infos du médecin",
         hours:"⏰ Horaires : Du samedi au jeudi (09h00 – 17h00)",
         copy:"Copier",
+        copiedMsgPrefix:"✅ Copié : ",
         back:"Retour"
       }
     };
@@ -287,6 +290,7 @@
       document.getElementById("langScreen").style.display="flex";
     }
 
+    // مشاركة — الآن الرسالة تبدأ باسم الطبيب (التخصص)
     document.getElementById("sendBtn").addEventListener("click", async ()=>{
       const name = document.getElementById("name").innerText;
       const role = document.getElementById("role").innerText;
@@ -304,7 +308,8 @@
           });
         }catch(e){console.log("Share cancelled",e);}
       }else{
-        alert("المشاركة غير مدعومة في هذا الجهاز");
+        // Fall-back: copy message to clipboard and inform user
+        copyStringWithFeedback(message);
       }
     });
 
@@ -324,12 +329,80 @@
       }
     });
 
+    // دالة نسخ مرنة مع fallback وترجمة رسالة النجاح
+    function copyStringWithFeedback(text){
+      const t = translations[currentLang] || translations.ar;
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(()=>{
+          alert(t.copiedMsgPrefix + text);
+        }).catch(err=>{
+          // fallback
+          fallbackCopyText(text, t);
+        });
+      } else {
+        fallbackCopyText(text, t);
+      }
+    }
+
+    function fallbackCopyText(text, t){
+      try{
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if(ok){
+          alert(t.copiedMsgPrefix + text);
+        } else {
+          alert(t.copiedMsgPrefix + text);
+        }
+      }catch(e){
+        alert((translations[currentLang]||translations.ar).copiedMsgPrefix + text);
+      }
+    }
+
+    // ربط أزرار النسخ الثلاثة
+    document.getElementById("copyPhone").addEventListener("click", function(){
+      const text = document.getElementById("phone").innerText;
+      copyStringWithFeedback(text);
+      flashButton(this);
+    });
+    document.getElementById("copyEmail").addEventListener("click", function(){
+      const text = document.getElementById("email").innerText;
+      copyStringWithFeedback(text);
+      flashButton(this);
+    });
+    document.getElementById("copyAddress").addEventListener("click", function(){
+      const text = document.getElementById("address").innerText;
+      copyStringWithFeedback(text);
+      flashButton(this);
+    });
+
+    // تأثير بصري مؤقت على الزر بعد النسخ (يغير الستايل ثم يعود)
+    function flashButton(btn){
+      btn.classList.add('copied');
+      const original = btn.innerText;
+      const t = translations[currentLang] || translations.ar;
+      btn.innerText = (currentLang==='fr' ? '✓' : '✓');
+      setTimeout(()=>{
+        btn.classList.remove('copied');
+        // أعد الكلمة المناسبة حسب اللغة
+        btn.innerText = t.copy;
+      }, 900);
+    }
+
+    // Expose copy function for possible fallbacks (not used directly)
     function copyText(id){
       const text = document.getElementById(id).innerText;
-      navigator.clipboard.writeText(text).then(()=>{
-        alert("✅ تم نسخ: " + text);
-      });
+      copyStringWithFeedback(text);
     }
+
+    // تأكد أن اللغة الافتراضية معرّفة (يمكن أن تغيّرها لاحقًا عبر setLanguage)
+    // currentLang = "ar"; // مُعرّف أعلاه
   </script>
 </body>
 </html>
