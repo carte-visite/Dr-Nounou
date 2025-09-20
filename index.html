@@ -163,6 +163,7 @@
       </div>
       <div class="actions">
         <button class="btn" id="saveBtn">حفظ رقم الهاتف</button>
+        <button class="btn" id="mapBtn">رؤية العنوان</button>
         <button class="btn" id="sendBtn">مشاركة بياناتي</button>
       </div>
     </div>
@@ -193,6 +194,10 @@
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+    });
+
+    document.getElementById("mapBtn").addEventListener("click", ()=>{
+      window.open("https://www.google.com/maps/place/Algiers/@36.7385639,2.8096837,10z/data=!3m1!4b1!4m6!3m5!1s0x128fb26977ea659f:0x4231102d38a36f49!8m2!3d36.753768!4d3.0587561!16zL20vMHJ0dg?hl=en-US&entry=ttu&g_ep=EgoyMDI1MDkxNy4wIKXMDSoASAFQAw%3D%3D", "_blank");
     });
 
     document.getElementById("sendBtn").addEventListener("click", async ()=>{
