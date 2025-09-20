@@ -64,21 +64,11 @@
       left:50%;
       transform:translateX(-50%);
     }
-    .avatar img{
-      width:100%;height:100%;object-fit:cover;
-    }
-    .info{
-      padding:100px 28px 28px;
-      text-align:center;
-    }
+    .avatar img{width:100%;height:100%;object-fit:cover;}
+    .info{padding:100px 28px 28px;text-align:center;}
     .name{font-size:22px;font-weight:700;line-height:1.3}
     .role{font-size:17px;opacity:0.8;margin-top:8px}
-    .contact-list{
-      margin-top:24px;
-      display:flex;
-      flex-direction:column;
-      gap:18px;
-    }
+    .contact-list{margin-top:24px;display:flex;flex-direction:column;gap:18px;}
     .contact-item{
       display:flex;
       align-items:center;
@@ -94,17 +84,9 @@
       color:white;
       text-decoration:none;
     }
-    .contact-item:active {
-      transform:scale(0.96);
-      background:rgba(255,255,255,0.15);
-    }
+    .contact-item:active {transform:scale(0.96);background:rgba(255,255,255,0.15);}
     .contact-item svg{flex:0 0 24px}
-    .actions{
-      margin-top:28px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
+    .actions{margin-top:28px;display:flex;flex-direction:column;gap:14px;}
     .btn{
       padding:14px;
       border-radius:12px;
@@ -120,20 +102,48 @@
     }
     .btn:hover{opacity:0.9}
     .btn:active{transform:scale(0.97);}
-    .footer{
-      text-align:center;
-      font-size:14px;
-      opacity:0.8;
-      padding:16px;
+    .footer{text-align:center;font-size:14px;opacity:0.8;padding:16px;}
+
+    /* شاشة اختيار اللغة */
+    .lang-screen{
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background:#1a1832;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      z-index:1000;
     }
+    .lang-screen h2{color:white;margin-bottom:24px;}
+    .lang-btn{
+      padding:12px 24px;
+      margin:8px;
+      border-radius:10px;
+      border:none;
+      font-size:16px;
+      cursor:pointer;
+      font-weight:600;
+      color:white;
+      background:linear-gradient(135deg,#6d28d9,#4f46e5);
+      transition:0.2s;
+    }
+    .lang-btn:hover{opacity:0.9}
   </style>
 </head>
 <body>
-  <div class="card">
+  <!-- شاشة اختيار اللغة -->
+  <div class="lang-screen" id="langScreen">
+    <h2>اختر اللغة / Choisissez la langue</h2>
+    <button class="lang-btn" onclick="setLanguage('ar')">العربية</button>
+    <button class="lang-btn" onclick="setLanguage('fr')">Français</button>
+  </div>
+
+  <!-- البطاقة -->
+  <div class="card" id="card" style="display:none;">
     <div>
       <div class="header">
         <div class="share" id="shareBtn">
-          <!-- share icon -->
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="18" cy="5" r="3"/>
             <circle cx="6" cy="12" r="3"/>
@@ -143,24 +153,20 @@
           </svg>
         </div>
         <div class="avatar">
-          <!-- صورة بيضاء افتراضية -->
           <img src="https://via.placeholder.com/150/FFFFFF/FFFFFF" alt="Profile"/>
         </div>
       </div>
       <div class="info">
         <div class="name" id="name">Dr. Mohamed Ahmed</div>
-        <div class="name" id="nameAr">د. محمد أحمد</div>
-        <div class="role" id="role">(طبيب قلب)</div>
+        <div class="role" id="role">(Cardiologist)</div>
         <div class="contact-list">
           <a href="tel:+1234567890" class="contact-item">
-            <!-- phone icon -->
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.12 1.05.38 2.07.78 3.02a2 2 0 0 1-.45 2.11l-1.1 1.1a16 16 0 0 0 6.18 6.18l1.1-1.1a2 2 0 0 1 2.11-.45c.95.4 1.97.66 3.02.78A2 2 0 0 1 22 16.92z"/>
             </svg>
             <span id="phone">+123 456 7890</span>
           </a>
           <a href="mailto:doctor@example.com" class="contact-item">
-            <!-- email icon -->
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="5" width="18" height="14" rx="2" ry="2"/>
               <polyline points="3,7 12,13 21,7"/>
@@ -168,45 +174,73 @@
             <span id="email">doctor@example.com</span>
           </a>
           <a href="https://www.google.com/maps/place/Algiers/" target="_blank" class="contact-item">
-            <!-- location icon -->
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/>
               <circle cx="12" cy="10" r="3"/>
             </svg>
-            <span id="address">Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger</span>
+            <span id="address">Alger, Algérie</span>
           </a>
         </div>
         <div class="actions">
-          <a href="tel:+1234567890" class="btn">حفظ رقم الهاتف</a>
-          <a href="https://www.google.com/maps/place/Algiers/" target="_blank" class="btn">عرض الموقع على الخريطة</a>
-          <button class="btn" id="sendBtn">مشاركة معلومات الطبيب</button>
+          <a href="tel:+1234567890" class="btn" id="saveBtn">Save Phone</a>
+          <a href="https://www.google.com/maps/place/Algiers/" target="_blank" class="btn" id="mapBtn">View on Map</a>
+          <button class="btn" id="sendBtn">Share Doctor Info</button>
         </div>
       </div>
     </div>
-    <div class="footer">
-      ⏰ أوقات العمل: من السبت إلى الخميس (09:00 – 17:00)
-    </div>
+    <div class="footer" id="hours">⏰ Reception: Sat–Thu (09:00 – 17:00)</div>
   </div>
 
   <script>
-    // بيانات الطبيب
-    const contact = {
-      name: "د. محمد أحمد",
-      role: "طبيب قلب",
-      email: "doctor@example.com",
-      phone: "+1234567890",
-      address: "Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger"
+    const translations = {
+      ar:{
+        name:"د. محمد أحمد",
+        role:"طبيب قلب",
+        phone:"+123 456 7890",
+        email:"doctor@example.com",
+        address:"الجزائر، الجزائر",
+        saveBtn:"حفظ رقم الهاتف",
+        mapBtn:"عرض الموقع على الخريطة",
+        shareBtn:"مشاركة معلومات الطبيب",
+        hours:"⏰ أوقات العمل: من السبت إلى الخميس (09:00 – 17:00)"
+      },
+      fr:{
+        name:"Dr. Mohamed Ahmed",
+        role:"Cardiologue",
+        phone:"+123 456 7890",
+        email:"doctor@example.com",
+        address:"Alger, Algérie",
+        saveBtn:"Enregistrer le numéro",
+        mapBtn:"Voir l’adresse",
+        shareBtn:"Partager les informations du médecin",
+        hours:"⏰ Horaires: Samedi au Jeudi (09h00 – 17h00)"
+      }
     };
+
+    function setLanguage(lang){
+      document.getElementById("langScreen").style.display="none";
+      document.getElementById("card").style.display="flex";
+      const t = translations[lang];
+      document.getElementById("name").innerText = t.name;
+      document.getElementById("role").innerText = t.role;
+      document.getElementById("phone").innerText = t.phone;
+      document.getElementById("email").innerText = t.email;
+      document.getElementById("address").innerText = t.address;
+      document.getElementById("saveBtn").innerText = t.saveBtn;
+      document.getElementById("mapBtn").innerText = t.mapBtn;
+      document.getElementById("sendBtn").innerText = t.shareBtn;
+      document.getElementById("hours").innerText = t.hours;
+    }
 
     document.getElementById("sendBtn").addEventListener("click", async ()=>{
       if(navigator.share){
         try{
           await navigator.share({
-            title: contact.name,
-            text: `👨‍⚕️ ${contact.name} (${contact.role})
-📞 ${contact.phone}
-✉️ ${contact.email}
-📍 ${contact.address}`
+            title: document.getElementById("name").innerText,
+            text: document.getElementById("role").innerText+"\n"+
+                  "📞 "+document.getElementById("phone").innerText+"\n"+
+                  "✉️ "+document.getElementById("email").innerText+"\n"+
+                  "📍 "+document.getElementById("address").innerText
           });
         }catch(e){console.log("Share cancelled",e);}
       }else{
