@@ -52,6 +52,20 @@
       transition:0.2s;
     }
     .share:active {transform:scale(0.9);}
+    .back{
+      position:absolute;
+      top:16px;
+      left:16px;
+      background:rgba(255,255,255,0.15);
+      border-radius:8px;
+      padding:6px 12px;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:600;
+      color:white;
+      transition:0.2s;
+    }
+    .back:active{transform:scale(0.9);}
     .avatar{
       width:140px;
       height:140px;
@@ -64,67 +78,41 @@
       left:50%;
       transform:translateX(-50%);
     }
-    .avatar img{
-      width:100%;height:100%;object-fit:cover;
-    }
-    .info{
-      padding:100px 28px 28px;
-      text-align:center;
-    }
+    .avatar img{width:100%;height:100%;object-fit:cover;}
+    .info{padding:100px 28px 28px;text-align:center;}
     .name{font-size:22px;font-weight:700;line-height:1.3}
     .role{font-size:17px;opacity:0.8;margin-top:8px}
-    .contact-list{
-      margin-top:24px;
-      display:flex;
-      flex-direction:column;
-      gap:18px;
-    }
+    .contact-list{margin-top:24px;display:flex;flex-direction:column;gap:18px;}
     .contact-item{
       display:flex;
       align-items:center;
-      justify-content:space-between;
+      gap:14px;
       font-size:15px;
+      word-break:break-word;
       padding:12px;
       border:1px solid rgba(255,255,255,0.25);
       border-radius:12px;
       background:rgba(255,255,255,0.05);
+      cursor:pointer;
       transition:0.2s;
       color:white;
-      gap:10px;
+      text-decoration:none;
+      justify-content:space-between;
     }
-    .contact-left{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex:1;
-      word-break:break-word;
-      overflow-wrap:break-word;
-    }
-    .contact-left span{
-      flex:1;
-      text-align:start;
-    }
-    .contact-item svg{flex:0 0 24px}
+    .contact-item:active {transform:scale(0.96);background:rgba(255,255,255,0.15);}
+    .contact-left{display:flex;align-items:center;gap:10px;}
     .copy-btn{
       background:rgba(255,255,255,0.15);
       border:none;
       border-radius:6px;
       padding:4px 10px;
       color:white;
-      font-size:15px;
+      font-size:13px;
       cursor:pointer;
       transition:0.2s;
-      white-space:nowrap;
-      flex-shrink:0;
-      align-self:center;
     }
     .copy-btn:hover{background:rgba(255,255,255,0.3);}
-    .actions{
-      margin-top:28px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
+    .actions{margin-top:28px;display:flex;flex-direction:column;gap:14px;}
     .btn{
       padding:14px;
       border-radius:12px;
@@ -140,20 +128,49 @@
     }
     .btn:hover{opacity:0.9}
     .btn:active{transform:scale(0.97);}
-    .footer{
-      text-align:center;
-      font-size:14px;
-      opacity:0.8;
-      padding:16px;
+    .footer{text-align:center;font-size:14px;opacity:0.8;padding:16px;}
+
+    /* شاشة اختيار اللغة */
+    .lang-screen{
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background:#1a1832;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      z-index:1000;
     }
+    .lang-screen h2{color:white;margin-bottom:24px;}
+    .lang-btn{
+      padding:12px 24px;
+      margin:8px;
+      border-radius:10px;
+      border:none;
+      font-size:16px;
+      cursor:pointer;
+      font-weight:600;
+      color:white;
+      background:linear-gradient(135deg,#6d28d9,#4f46e5);
+      transition:0.2s;
+    }
+    .lang-btn:hover{opacity:0.9}
   </style>
 </head>
 <body>
-  <div class="card">
+  <!-- شاشة اختيار اللغة -->
+  <div class="lang-screen" id="langScreen">
+    <h2>اختر اللغة / Choisissez la langue</h2>
+    <button class="lang-btn" onclick="setLanguage('ar')">العربية</button>
+    <button class="lang-btn" onclick="setLanguage('fr')">Français</button>
+  </div>
+
+  <!-- البطاقة -->
+  <div class="card" id="card" style="display:none;">
     <div>
       <div class="header">
+        <div class="back" id="backBtn">رجوع</div>
         <div class="share" id="shareBtn">
-          <!-- share icon -->
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="18" cy="5" r="3"/>
             <circle cx="6" cy="12" r="3"/>
@@ -168,8 +185,7 @@
       </div>
       <div class="info">
         <div class="name" id="name">Dr. Mohamed Ahmed</div>
-        <div class="name" id="nameAr">د. محمد أحمد</div>
-        <div class="role" id="role">(طبيب قلب)</div>
+        <div class="role" id="role">(Cardiologist)</div>
         <div class="contact-list">
           <div class="contact-item">
             <div class="contact-left">
@@ -178,7 +194,7 @@
               </svg>
               <span id="phone">+123 456 7890</span>
             </div>
-            <button class="copy-btn" onclick="copyText('phone', this)">نسخ</button>
+            <button class="copy-btn" id="copyPhone">نسخ</button>
           </div>
 
           <div class="contact-item">
@@ -189,50 +205,102 @@
               </svg>
               <span id="email">doctor@example.com</span>
             </div>
-            <button class="copy-btn" onclick="copyText('email', this)">نسخ</button>
+            <button class="copy-btn" id="copyEmail">نسخ</button>
           </div>
 
           <div class="contact-item">
-            <div class="contact-left" style="align-items:flex-start;">
+            <div class="contact-left">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/>
                 <circle cx="12" cy="10" r="3"/>
               </svg>
-              <span id="address" style="text-align:start;">Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger</span>
+              <span id="address">Alger, Algérie</span>
             </div>
-            <button class="copy-btn" onclick="copyText('address', this)">نسخ</button>
+            <button class="copy-btn" id="copyAddress">نسخ</button>
           </div>
         </div>
         <div class="actions">
-          <a href="tel:+1234567890" class="btn">حفظ رقم الهاتف</a>
-          <a href="https://www.google.com/maps/place/Algiers/" target="_blank" class="btn">عرض الموقع على الخريطة</a>
-          <button class="btn" id="sendBtn">مشاركة معلومات الطبيب</button>
+          <a href="tel:+1234567890" class="btn" id="saveBtn">Save Phone</a>
+          <a href="https://www.google.com/maps/place/Algiers/" target="_blank" class="btn" id="mapBtn">View on Map</a>
+          <button class="btn" id="sendBtn">Share Doctor Info</button>
         </div>
       </div>
     </div>
-    <div class="footer">
-      ⏰ أوقات العمل: من السبت إلى الخميس (09:00 – 17:00)
-    </div>
+    <div class="footer" id="hours">⏰ Reception: Sat–Thu (09:00 – 17:00)</div>
   </div>
 
   <script>
-    const contact = {
-      name: "د. محمد أحمد",
-      role: "طبيب قلب",
-      email: "doctor@example.com",
-      phone: "+1234567890",
-      address: "Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger"
+    const translations = {
+      ar:{
+        name:"د. محمد أحمد",
+        role:"طبيب قلب",
+        phone:"05.00.00.00.00",
+        email:"doctor@example.com",
+        address:"الجزائر، الجزائر",
+        saveBtn:"حفظ رقم الهاتف",
+        mapBtn:"عرض الموقع على الخريطة",
+        shareBtn:"مشاركة معلومات الطبيب",
+        hours:"⏰ أوقات العمل: من السبت إلى الخميس (09:00 – 17:00)",
+        copy:"نسخ",
+        back:"رجوع"
+      },
+      fr:{
+        name:"Dr. Mohamed Ahmed",
+        role:"Cardiologue",
+        phone:"05.00.00.00.00",
+        email:"doctor@example.com",
+        address:"Alger, Algérie",
+        saveBtn:"Enregistrer le numéro",
+        mapBtn:"Voir l'adresse",
+        shareBtn:"Partager les infos du médecin",
+        hours:"⏰ Horaires : Du samedi au jeudi (09h00 – 17h00)",
+        copy:"Copier",
+        back:"Retour"
+      }
     };
 
+    let currentLang = "ar";
+
+    function setLanguage(lang){
+      currentLang = lang;
+      document.getElementById("langScreen").style.display="none";
+      document.getElementById("card").style.display="flex";
+      const t = translations[lang];
+      document.getElementById("name").innerText = t.name;
+      document.getElementById("role").innerText = t.role;
+      document.getElementById("phone").innerText = t.phone;
+      document.getElementById("email").innerText = t.email;
+      document.getElementById("address").innerText = t.address;
+      document.getElementById("saveBtn").innerText = t.saveBtn;
+      document.getElementById("mapBtn").innerText = t.mapBtn;
+      document.getElementById("sendBtn").innerText = t.shareBtn;
+      document.getElementById("hours").innerText = t.hours;
+      document.getElementById("copyPhone").innerText = t.copy;
+      document.getElementById("copyEmail").innerText = t.copy;
+      document.getElementById("copyAddress").innerText = t.copy;
+      document.getElementById("backBtn").innerText = t.back;
+      history.pushState({screen:"card"},"","#card");
+    }
+
+    function showLangScreen(){
+      document.getElementById("card").style.display="none";
+      document.getElementById("langScreen").style.display="flex";
+    }
+
     document.getElementById("sendBtn").addEventListener("click", async ()=>{
+      const name = document.getElementById("name").innerText;
+      const role = document.getElementById("role").innerText;
+      const phone = document.getElementById("phone").innerText;
+      const email = document.getElementById("email").innerText;
+      const address = document.getElementById("address").innerText;
+
+      const message = `${name} (${role})\n📞 ${phone}\n✉️ ${email}\n📍 ${address}`;
+
       if(navigator.share){
         try{
           await navigator.share({
-            title: contact.name,
-            text: `${contact.name} (${contact.role})
-📞 ${contact.phone}
-✉️ ${contact.email}
-📍 ${contact.address}`
+            title: name,
+            text: message
           });
         }catch(e){console.log("Share cancelled",e);}
       }else{
@@ -244,13 +312,31 @@
       document.getElementById("sendBtn").click();
     });
 
-    function copyText(id, btn){
+    document.getElementById("backBtn").addEventListener("click", ()=>{
+      showLangScreen();
+      history.pushState({screen:"lang"},"","#lang");
+    });
+
+    window.addEventListener("popstate", (event)=>{
+      if(event.state && event.state.screen==="card"){
+        showLangScreen();
+        history.pushState({screen:"lang"},"","#lang");
+      }
+    });
+
+    function copyText(id, btnId){
       const text = document.getElementById(id).innerText;
+      const btn = document.getElementById(btnId);
       navigator.clipboard.writeText(text).then(()=>{
+        const original = btn.innerText;
         btn.innerText = "✅";
-        setTimeout(()=>{btn.innerText = "نسخ";}, 2000);
+        setTimeout(()=>{btn.innerText = original;},1000);
       });
     }
+
+    document.getElementById("copyPhone").addEventListener("click", ()=>copyText("phone","copyPhone"));
+    document.getElementById("copyEmail").addEventListener("click", ()=>copyText("email","copyEmail"));
+    document.getElementById("copyAddress").addEventListener("click", ()=>copyText("address","copyAddress"));
   </script>
 </body>
 </html>
