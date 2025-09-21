@@ -81,18 +81,30 @@
     }
     .contact-item{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
       font-size:15px;
-      word-break:break-word;
       padding:12px;
       border:1px solid rgba(255,255,255,0.25);
       border-radius:12px;
       background:rgba(255,255,255,0.05);
       transition:0.2s;
       color:white;
+      gap:10px;
     }
-    .contact-item svg{flex:0 0 24px;margin-right:8px}
+    .contact-left{
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      flex:1;
+      word-break:break-word;
+      overflow-wrap:break-word;
+    }
+    .contact-left span{
+      flex:1;
+      text-align:start;
+    }
+    .contact-item svg{flex:0 0 24px;margin-top:2px}
     .copy-btn{
       background:rgba(255,255,255,0.15);
       border:none;
@@ -102,6 +114,9 @@
       font-size:13px;
       cursor:pointer;
       transition:0.2s;
+      white-space:nowrap;
+      flex-shrink:0;
+      align-self:center;
     }
     .copy-btn:hover{background:rgba(255,255,255,0.3);}
     .actions{
@@ -131,7 +146,6 @@
       opacity:0.8;
       padding:16px;
     }
-    .contact-left{display:flex;align-items:center;gap:8px}
   </style>
 </head>
 <body>
@@ -149,7 +163,6 @@
           </svg>
         </div>
         <div class="avatar">
-          <!-- صورة بيضاء افتراضية -->
           <img src="https://via.placeholder.com/150/FFFFFF/FFFFFF" alt="Profile"/>
         </div>
       </div>
@@ -203,7 +216,6 @@
   </div>
 
   <script>
-    // بيانات الطبيب
     const contact = {
       name: "د. محمد أحمد",
       role: "طبيب قلب",
@@ -212,7 +224,6 @@
       address: "Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger"
     };
 
-    // زر المشاركة
     document.getElementById("sendBtn").addEventListener("click", async ()=>{
       if(navigator.share){
         try{
@@ -233,7 +244,6 @@
       document.getElementById("sendBtn").click();
     });
 
-    // وظيفة النسخ
     function copyText(id, btn){
       const text = document.getElementById(id).innerText;
       navigator.clipboard.writeText(text).then(()=>{
