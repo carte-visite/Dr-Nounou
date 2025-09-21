@@ -81,7 +81,7 @@
     }
     .contact-item{
       display:flex;
-      align-items:flex-start;
+      align-items:center; /* ✅ توسيط عمودي */
       justify-content:space-between;
       font-size:15px;
       padding:12px;
@@ -94,7 +94,7 @@
     }
     .contact-left{
       display:flex;
-      align-items:flex-start;
+      align-items:center; /* ✅ توسيط عمودي للنص مع الأيقونة */
       gap:8px;
       flex:1;
       word-break:break-word;
@@ -102,16 +102,16 @@
     }
     .contact-left span{
       flex:1;
-      text-align:start;
+      text-align:start; /* رجوع للوضعية الأصلية */
     }
-    .contact-item svg{flex:0 0 24px;margin-top:2px}
+    .contact-item svg{flex:0 0 24px}
     .copy-btn{
       background:rgba(255,255,255,0.15);
       border:none;
       border-radius:6px;
       padding:4px 10px;
       color:white;
-      font-size:13px;
+      font-size:15px;
       cursor:pointer;
       transition:0.2s;
       white-space:nowrap;
@@ -193,12 +193,12 @@
           </div>
 
           <div class="contact-item">
-            <div class="contact-left">
+            <div class="contact-left" style="align-items:flex-start;">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/>
                 <circle cx="12" cy="10" r="3"/>
               </svg>
-              <span id="address">Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger</span>
+              <span id="address" style="text-align:start;">Professeur LOUNIS Doulkifly Médecine Interne, Cardiologie, Diabétologie. Chevalley, Alger</span>
             </div>
             <button class="copy-btn" onclick="copyText('address', this)">نسخ</button>
           </div>
