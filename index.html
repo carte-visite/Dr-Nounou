@@ -499,19 +499,14 @@
       });
 
       // تحديث label التاريخ
-      function updateDateLabel() {
-        if(appointmentDate.value){
-          dateLabel.style.top="-8px";
-          dateLabel.style.left="8px";
-          dateLabel.style.fontSize="12px";
-          dateLabel.style.color="#FFD700";
-        } else {
-          dateLabel.style.top="10px";
-          dateLabel.style.left="10px";
-          dateLabel.style.fontSize="14px";
-          dateLabel.style.color="#aaa";
-        }
-      }
+     function updateDateLabel() {
+  if (appointmentDate.value) {
+    dateLabel.style.display = "none";
+  } else {
+    dateLabel.style.display = "block";
+  }
+}
+
       appointmentDate.addEventListener("focus", updateDateLabel);
       appointmentDate.addEventListener("blur", updateDateLabel);
       appointmentDate.addEventListener("input", updateDateLabel);
