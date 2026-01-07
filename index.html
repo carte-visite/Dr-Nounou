@@ -332,6 +332,11 @@
       }
     };
 
+    const weekDays = {
+      ar:["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"],
+      fr:["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"]
+    };
+
     document.addEventListener("DOMContentLoaded", ()=>{
       const langScreen = document.getElementById("langScreen");
       const card = document.getElementById("card");
@@ -473,14 +478,20 @@
           return;
         }
 
+        // تحويل التاريخ لليوم/شهر/سنة واسم اليوم
+        const d = new Date(date);
+        const dayName = weekDays[currentLang][d.getDay()];
+        const formattedDate = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+        const displayDate = `${dayName} ${formattedDate}`;
+
         const phone = sharedData.bookingWhatsApp.replace(/\s/g,'');
         const message = currentLang==="ar" ?
 `📅 طلب حجز موعد
 👤 الاسم: ${name}
-🗓 التاريخ: ${date}` :
+🗓 التاريخ: ${displayDate}` :
 `📅 Prise de rendez-vous
 👤 Nom: ${name}
-🗓 Date: ${date}`;
+🗓 Date: ${displayDate}`;
 
         const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
         window.open(url, "_blank");
@@ -490,10 +501,11 @@
       // تحديث label التاريخ
       function updateDateLabel() {
         if(appointmentDate.value){
-          // عند اختيار تاريخ، نجعل العبارة مخفية
-          dateLabel.style.display = "none";
+          dateLabel.style.top="-8px";
+          dateLabel.style.left="8px";
+          dateLabel.style.fontSize="12px";
+          dateLabel.style.color="#FFD700";
         } else {
-          dateLabel.style.display = "block";
           dateLabel.style.top="10px";
           dateLabel.style.left="10px";
           dateLabel.style.fontSize="14px";
