@@ -152,8 +152,8 @@
       border-radius:8px;
       border:none;
       position:relative;
-      background:white; /* <-- جعل خلفية التاريخ بيضاء */
-      color:black;       /* <-- جعل النص أسود للوضوح */
+      background:white;
+      color:black;
     }
     .date-wrapper label{
       position:absolute;
@@ -490,11 +490,10 @@
       // تحديث label التاريخ
       function updateDateLabel() {
         if(appointmentDate.value){
-          dateLabel.style.top="-8px";
-          dateLabel.style.left="8px";
-          dateLabel.style.fontSize="12px";
-          dateLabel.style.color="#FFD700";
+          // عند اختيار تاريخ، نجعل العبارة مخفية
+          dateLabel.style.display = "none";
         } else {
+          dateLabel.style.display = "block";
           dateLabel.style.top="10px";
           dateLabel.style.left="10px";
           dateLabel.style.fontSize="14px";
