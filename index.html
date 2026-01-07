@@ -140,7 +140,7 @@
     body.light-mode .service-item{background:#ececec;}
     body.light-mode .close-services{background:linear-gradient(135deg,#60a5fa,#2563eb);color:white;}
 
-    /* إصلاح حقل التاريخ على الهاتف */
+    /* إصلاح حقل التاريخ على الهاتف وجعله أبيض */
     .date-wrapper{
       position:relative;
       width:100%;
@@ -152,8 +152,8 @@
       border-radius:8px;
       border:none;
       position:relative;
-      background:none;
-      color:white;
+      background:white; /* <-- جعل خلفية التاريخ بيضاء */
+      color:black;       /* <-- جعل النص أسود للوضوح */
     }
     .date-wrapper label{
       position:absolute;
