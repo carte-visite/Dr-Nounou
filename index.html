@@ -165,9 +165,8 @@
       <h3 id="bookingTitle">حجز موعد</h3>
 
       <input id="patientName" placeholder="الاسم الكامل" style="width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px;">
-      <input id="appointmentDate" type="date" style="width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px;">
+      <input id="appointmentDate" type="date" placeholder="اختر التاريخ" style="width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px;">
       
-      <!-- الملاحظة الجديدة -->
       <div id="bookingNote" style="font-size:14px;color:#FFD700;margin-bottom:12px;text-align:center;"></div>
 
       <button class="close-services" id="sendBooking">إرسال عبر واتساب</button>
@@ -257,14 +256,20 @@
   </div>
 
   <script>
+    const sharedData = {
+      phone:"05.00.00.00.00",
+      whatsapp:"+213500000000",
+      email:"doctor.doctor.doctordoctor1994@example.com",
+      address:"rue maalaabaliich maalaabaliich1 maalaabaliich2 maalaabaliich3",
+      mapLink:"https://www.google.com/maps/place/Algiers/",
+      bookingWhatsApp:"+213500000001",
+      avatar:"https://via.placeholder.com/150"
+    };
+
     const doctorData = {
       ar:{
         name:"د. محمد أحمد",
         role:"طبيب قلب",
-        phone:"05.00.00.00.00",
-        whatsapp:"+213697643042",
-        email:"doctor.doctor.doctooctor1994@gmail.com",
-        address:"rue maalaabaliich maalaabaliich1 maalaabaliich2 maalaabaliich3",
         saveBtn:"حفظ رقم الهاتف",
         mapBtn:"عرض الموقع على الخريطة",
         shareBtn:"مشاركة معلومات الطبيب",
@@ -276,17 +281,12 @@
         back:"رجوع",
         servicesBtn:"الخدمات الطبية",
         close:"إغلاق",
-        mapLink:"https://www.google.com/maps/place/Algiers/",
-        avatar:"https://via.placeholder.com/150",
-        bookingBtn:"📅 حجز موعد"
+        bookingBtn:"📅 حجز موعد",
+        datePlaceholder:"اختر التاريخ"
       },
       fr:{
         name:"Dr. Mohamed Ahmed",
         role:"Cardiologue",
-        phone:"05.00.00.00.00",
-        whatsapp:"+213697643042",
-        email:"doctor.doctor.doctordoctor1994@example.com",
-        address:"rue maalaabaliich maalaabaliich1 maalaabaliich2 maalaabaliich3",
         saveBtn:"Enregistrer le numéro",
         mapBtn:"Voir l'adresse",
         shareBtn:"Partager les informations du médecin",
@@ -298,9 +298,8 @@
         back:"Retour",
         servicesBtn:"Services médicaux",
         close:"Fermer",
-        mapLink:"https://www.google.com/maps/place/Algiers/",
-        avatar:"https://via.placeholder.com/150",
-        bookingBtn:"📅 Prendre rendez-vous"
+        bookingBtn:"📅 Prendre rendez-vous",
+        datePlaceholder:"Choisir la date"
       }
     };
 
@@ -313,7 +312,12 @@
       const bookingModal = document.getElementById("bookingModal");
       const bookingTitle = document.getElementById("bookingTitle");
       const bookingBtn = document.getElementById("bookingBtn");
+      const appointmentDate = document.getElementById("appointmentDate");
       let currentLang = "ar";
+
+      // تحديد الحد الأدنى لتاريخ الحجز (اليوم)
+      const today = new Date().toISOString().split('T')[0];
+      appointmentDate.setAttribute("min", today);
 
       function setLanguage(lang){
         currentLang = lang;
@@ -323,27 +327,26 @@
 
         document.getElementById("name").innerText = t.name;
         document.getElementById("role").innerText = t.role;
-        document.getElementById("phone").innerText = t.phone;
-        document.getElementById("whatsapp").innerText = t.whatsapp;
-        document.getElementById("email").innerText = t.email;
-        document.getElementById("address").innerText = t.address;
+
+        document.getElementById("phone").innerText = sharedData.phone;
+        document.getElementById("whatsapp").innerText = sharedData.whatsapp;
+        document.getElementById("email").innerText = sharedData.email;
+        document.getElementById("address").innerText = sharedData.address;
+        document.getElementById("mapBtn").href = sharedData.mapLink;
+        document.getElementById("saveBtn").href = "tel:"+sharedData.phone.replace(/\s/g,'');
 
         document.getElementById("saveBtn").innerText = t.saveBtn;
         document.getElementById("mapBtn").innerText = t.mapBtn;
         document.getElementById("sendBtn").innerText = t.shareBtn;
         bookingTitle.innerText = t.bookingTitle;
-
         bookingBtn.innerText = t.bookingBtn;
-
         document.getElementById("hours").innerText = t.hours;
         document.getElementById("copyPhone").innerText = t.copy;
         document.getElementById("copyWhatsApp").innerText = t.copy;
         document.getElementById("copyEmail").innerText = t.copy;
         document.getElementById("copyAddress").innerText = t.copy;
-
         document.getElementById("backBtn").innerText = t.back;
         document.getElementById("servicesBtn").innerText = t.servicesBtn;
-
         document.getElementById("servicesTitle").innerText = t.servicesTitle;
         document.getElementById("closeServices").innerText = t.close;
 
@@ -355,9 +358,10 @@
           servicesList.appendChild(div);
         });
 
-        document.getElementById("mapBtn").href = t.mapLink;
-        document.getElementById("saveBtn").href = "tel:"+t.phone.replace(/\s/g,'');
-        document.getElementById("avatarImg").src = t.avatar;
+        document.getElementById("avatarImg").src = sharedData.avatar;
+
+        // تحديث placeholder لحقل التاريخ
+        appointmentDate.placeholder = t.datePlaceholder;
 
         history.pushState({screen:"card"},"","#card");
       }
@@ -395,10 +399,7 @@
       document.getElementById("closeServices").addEventListener("click", ()=>{ servicesModal.style.display = "none"; });
       servicesModal.addEventListener("click", (e)=>{ if(e.target === servicesModal){ servicesModal.style.display = "none"; } });
 
-      document.getElementById("backBtn").addEventListener("click", ()=>{
-        card.style.display = "none";
-        langScreen.style.display = "flex";
-      });
+      document.getElementById("backBtn").addEventListener("click", ()=>{ card.style.display = "none"; langScreen.style.display = "flex"; });
 
       const savedTheme = localStorage.getItem("theme");
       if(savedTheme==="light"){document.body.classList.add("light-mode");themeBtn.textContent="☀️";}
@@ -409,22 +410,20 @@
         themeBtn.textContent = light ? "☀️" : "🌙";
       });
 
-      // ===============================
-      // حجز الموعد بدون اسم الطبيب
-      // ===============================
       bookingBtn.addEventListener("click", ()=>{
         bookingModal.style.display = "flex";
-
         if(currentLang==="ar"){
           document.getElementById("patientName").placeholder = "الاسم الكامل";
           document.getElementById("sendBooking").innerText = "إرسال عبر واتساب";
           document.getElementById("closeBooking").innerText = "إلغاء";
           document.getElementById("bookingNote").innerText = "تنبيه: يجب انتظار تأكيد الطبيب قبل اعتبار الموعد نهائيًا.";
+          appointmentDate.placeholder = doctorData.ar.datePlaceholder;
         } else {
           document.getElementById("patientName").placeholder = "Nom complet";
           document.getElementById("sendBooking").innerText = "Envoyer via WhatsApp";
           document.getElementById("closeBooking").innerText = "Annuler";
           document.getElementById("bookingNote").innerText = "Attention : Il faut attendre la confirmation du médecin avant que le rendez-vous soit définitif.";
+          appointmentDate.placeholder = doctorData.fr.datePlaceholder;
         }
       });
 
@@ -440,20 +439,22 @@
           return;
         }
 
-        const phone = document.getElementById("whatsapp").innerText.replace(/\s/g,'');
+        if(new Date(date) < new Date().setHours(0,0,0,0)){
+          alert(currentLang==="ar"?"لا يمكن اختيار تاريخ في الماضي":"Impossible de choisir une date passée");
+          return;
+        }
 
-        const message =
-currentLang==="ar" ?
+        const phone = sharedData.bookingWhatsApp.replace(/\s/g,'');
+        const message = currentLang==="ar" ?
 `📅 طلب حجز موعد
-📝 الاسم: ${name}
+👤 الاسم: ${name}
 🗓 التاريخ: ${date}` :
 `📅 Prise de rendez-vous
-📝 Nom: ${name}
+👤 Nom: ${name}
 🗓 Date: ${date}`;
 
         const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
         window.open(url, "_blank");
-
         bookingModal.style.display = "none";
       });
 
