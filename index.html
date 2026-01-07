@@ -139,6 +139,30 @@
     body.light-mode .services-box{background:#f7f6f2;color:#222;}
     body.light-mode .service-item{background:#ececec;}
     body.light-mode .close-services{background:linear-gradient(135deg,#60a5fa,#2563eb);color:white;}
+
+    /* إصلاح حقل التاريخ على الهاتف */
+    .date-wrapper{
+      position:relative;
+      width:100%;
+      margin-bottom:10px;
+    }
+    .date-wrapper input[type="date"]{
+      width:100%;
+      padding:10px;
+      border-radius:8px;
+      border:none;
+      position:relative;
+      background:none;
+      color:white;
+    }
+    .date-wrapper label{
+      position:absolute;
+      top:10px;
+      left:10px;
+      color:#aaa;
+      pointer-events:none;
+      transition:0.2s;
+    }
   </style>
 </head>
 <body>
@@ -165,8 +189,13 @@
       <h3 id="bookingTitle">حجز موعد</h3>
 
       <input id="patientName" placeholder="الاسم الكامل" style="width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px;">
-      <input id="appointmentDate" type="date" placeholder="اختر التاريخ" style="width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px;">
-      
+
+      <!-- حقل التاريخ الجديد -->
+      <div class="date-wrapper">
+        <input id="appointmentDate" type="date">
+        <label id="dateLabel">اختر التاريخ</label>
+      </div>
+
       <div id="bookingNote" style="font-size:14px;color:#FFD700;margin-bottom:12px;text-align:center;"></div>
 
       <button class="close-services" id="sendBooking">إرسال عبر واتساب</button>
@@ -313,6 +342,7 @@
       const bookingTitle = document.getElementById("bookingTitle");
       const bookingBtn = document.getElementById("bookingBtn");
       const appointmentDate = document.getElementById("appointmentDate");
+      const dateLabel = document.getElementById("dateLabel");
       let currentLang = "ar";
 
       // تحديد الحد الأدنى لتاريخ الحجز (اليوم)
@@ -360,8 +390,8 @@
 
         document.getElementById("avatarImg").src = sharedData.avatar;
 
-        // تحديث placeholder لحقل التاريخ
-        appointmentDate.placeholder = t.datePlaceholder;
+        // تحديث label لحقل التاريخ
+        dateLabel.innerText = t.datePlaceholder;
 
         history.pushState({screen:"card"},"","#card");
       }
@@ -417,14 +447,13 @@
           document.getElementById("sendBooking").innerText = "إرسال عبر واتساب";
           document.getElementById("closeBooking").innerText = "إلغاء";
           document.getElementById("bookingNote").innerText = "تنبيه: يجب انتظار تأكيد الطبيب قبل اعتبار الموعد نهائيًا.";
-          appointmentDate.placeholder = doctorData.ar.datePlaceholder;
         } else {
           document.getElementById("patientName").placeholder = "Nom complet";
           document.getElementById("sendBooking").innerText = "Envoyer via WhatsApp";
           document.getElementById("closeBooking").innerText = "Annuler";
           document.getElementById("bookingNote").innerText = "Attention : Il faut attendre la confirmation du médecin avant que le rendez-vous soit définitif.";
-          appointmentDate.placeholder = doctorData.fr.datePlaceholder;
         }
+        updateDateLabel();
       });
 
       document.getElementById("closeBooking").addEventListener("click", ()=>{ bookingModal.style.display = "none"; });
@@ -457,6 +486,25 @@
         window.open(url, "_blank");
         bookingModal.style.display = "none";
       });
+
+      // تحديث label التاريخ
+      function updateDateLabel() {
+        if(appointmentDate.value){
+          dateLabel.style.top="-8px";
+          dateLabel.style.left="8px";
+          dateLabel.style.fontSize="12px";
+          dateLabel.style.color="#FFD700";
+        } else {
+          dateLabel.style.top="10px";
+          dateLabel.style.left="10px";
+          dateLabel.style.fontSize="14px";
+          dateLabel.style.color="#aaa";
+        }
+      }
+      appointmentDate.addEventListener("focus", updateDateLabel);
+      appointmentDate.addEventListener("blur", updateDateLabel);
+      appointmentDate.addEventListener("input", updateDateLabel);
+      updateDateLabel();
 
     });
   </script>
