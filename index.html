@@ -410,7 +410,7 @@
       });
 
       // ===============================
-      // حجز الموعد بدون الساعة + الملاحظة
+      // حجز الموعد بدون اسم الطبيب
       // ===============================
       bookingBtn.addEventListener("click", ()=>{
         bookingModal.style.display = "flex";
@@ -440,19 +440,16 @@
           return;
         }
 
-        const doctor = document.getElementById("name").innerText;
         const phone = document.getElementById("whatsapp").innerText.replace(/\s/g,'');
 
         const message =
 currentLang==="ar" ?
 `📅 طلب حجز موعد
-👤 الاسم: ${name}
-🗓 التاريخ: ${date}
-👨‍⚕️ الطبيب: ${doctor}` :
+📝 الاسم: ${name}
+🗓 التاريخ: ${date}` :
 `📅 Prise de rendez-vous
-👤 Nom: ${name}
-🗓 Date: ${date}
-👨‍⚕️ Médecin: ${doctor}`;
+📝 Nom: ${name}
+🗓 Date: ${date}`;
 
         const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
         window.open(url, "_blank");
