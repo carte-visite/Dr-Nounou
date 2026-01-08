@@ -140,32 +140,27 @@
     body.light-mode .service-item{background:#ececec;}
     body.light-mode .close-services{background:linear-gradient(135deg,#60a5fa,#2563eb);color:white;}
 
-    /* إصلاح حقل التاريخ على الهاتف وجعله أبيض */
+    /* حقل التاريخ الجديد */
     .date-wrapper{
       position:relative;
       width:100%;
       margin-bottom:10px;
     }
-    .date-wrapper input[type="date"]{
+    .date-input{
       width:100%;
       padding:10px;
       border-radius:8px;
       border:none;
-      position:relative;
       background:white;
       color:black;
+      text-align:center;
+      font-size:16px;
+      cursor:pointer;
     }
-    .date-wrapper label{
-      position:absolute;
-      top:10px;
-      left:10px;
-      color:#aaa;
-      pointer-events:none;
-      transition:0.2s;
-    }
-    #displayDate{
-      margin-top:6px;
-      color:white;
+    .date-label{
+      margin-bottom:6px;
+      display:block;
+      color:#FFD700;
       font-size:14px;
       text-align:center;
     }
@@ -194,14 +189,11 @@
     <div class="services-box">
       <h3 id="bookingTitle">حجز موعد</h3>
 
-      <input id="patientName" placeholder="الاسم الكامل" style="width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px;">
+      <input id="patientName" placeholder="الاسم الكامل" style="width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px;text-align:center;">
 
       <!-- حقل التاريخ الجديد -->
-      <div class="date-wrapper">
-        <input id="appointmentDate" type="date">
-        <label id="dateLabel">اختر التاريخ</label>
-        <div id="displayDate"></div>
-      </div>
+      <label class="date-label" id="dateLabel">اختر التاريخ</label>
+      <input type="date" id="appointmentDate" class="date-input">
 
       <div id="bookingNote" style="font-size:14px;color:#FFD700;margin-bottom:12px;text-align:center;"></div>
 
@@ -339,11 +331,6 @@
       }
     };
 
-    const weekDays = {
-      ar:["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"],
-      fr:["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"]
-    };
-
     document.addEventListener("DOMContentLoaded", ()=>{
       const langScreen = document.getElementById("langScreen");
       const card = document.getElementById("card");
@@ -355,11 +342,9 @@
       const bookingBtn = document.getElementById("bookingBtn");
       const appointmentDate = document.getElementById("appointmentDate");
       const dateLabel = document.getElementById("dateLabel");
-      const displayDate = document.getElementById("displayDate");
       let currentLang = "ar";
 
-      const today = new Date().toISOString().split('T')[0];
-      appointmentDate.setAttribute("min", today);
+      function padZero(n){return n<10?'0'+n:n;}
 
       function setLanguage(lang){
         currentLang = lang;
@@ -401,8 +386,8 @@
         });
 
         document.getElementById("avatarImg").src = sharedData.avatar;
+
         dateLabel.innerText = t.datePlaceholder;
-        updateDateLabel();
 
         history.pushState({screen:"card"},"","#card");
       }
@@ -464,7 +449,6 @@
           document.getElementById("closeBooking").innerText = "Annuler";
           document.getElementById("bookingNote").innerText = "Attention : Il faut attendre la confirmation du médecin avant que le rendez-vous soit définitif.";
         }
-        updateDateLabel();
       });
 
       document.getElementById("closeBooking").addEventListener("click", ()=>{ bookingModal.style.display = "none"; });
@@ -472,58 +456,25 @@
 
       document.getElementById("sendBooking").addEventListener("click", ()=>{
         const name = document.getElementById("patientName").value.trim();
-        const date = document.getElementById("appointmentDate").value;
-
+        const date = appointmentDate.value;
         if(!name || !date){
           alert(currentLang==="ar"?"يرجى ملء جميع الحقول":"Veuillez remplir tous les champs");
           return;
         }
 
-        if(new Date(date) < new Date().setHours(0,0,0,0)){
-          alert(currentLang==="ar"?"لا يمكن اختيار تاريخ في الماضي":"Impossible de choisir une date passée");
-          return;
-        }
-
-        const d = new Date(date);
-        const dayName = weekDays[currentLang][d.getDay()];
-        const formattedDate = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
-        const displayDateValue = `${dayName} ${formattedDate}`;
-
         const phone = sharedData.bookingWhatsApp.replace(/\s/g,'');
         const message = currentLang==="ar" ?
 `📅 طلب حجز موعد
 👤 الاسم: ${name}
-🗓 التاريخ: ${displayDateValue}` :
+🗓 التاريخ: ${date}` :
 `📅 Prendre rendez-vous
 👤 Nom: ${name}
-🗓 Date: ${displayDateValue}`;
+🗓 Date: ${date}`;
 
         const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
         window.open(url, "_blank");
         bookingModal.style.display = "none";
       });
-
-      // تحديث label التاريخ و displayDate
-      function updateDateLabel() {
-        if (appointmentDate.value) {
-          dateLabel.style.display = "none";
-          const d = new Date(appointmentDate.value);
-          if(!isNaN(d)){
-            const day = String(d.getDate()).padStart(2,'0');
-            const month = String(d.getMonth()+1).padStart(2,'0');
-            const year = d.getFullYear();
-            displayDate.innerText = `${day}/${month}/${year}`;
-          } else displayDate.innerText = "";
-        } else {
-          dateLabel.style.display = "block";
-          displayDate.innerText = "";
-        }
-      }
-
-      appointmentDate.addEventListener("focus", updateDateLabel);
-      appointmentDate.addEventListener("blur", updateDateLabel);
-      appointmentDate.addEventListener("input", updateDateLabel);
-      updateDateLabel();
 
     });
   </script>
